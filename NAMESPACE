@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+useDynLib(conMItion)
+importFrom(stats, cor)
+importFrom(stats, runif)
