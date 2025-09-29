@@ -54,7 +54,7 @@ CORmat2vecPermu <- function(mat, vec, cor_type = "pearson", bulkIdx = 0, permuta
 
   permutationCorVector <- rep(0,permutationTimes)
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = F)
+    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = (ncol(mat)>nrow(mat)) )
     randColIdx <- sample(1:ncol(mat),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat[idx]
@@ -129,7 +129,7 @@ MImat2vecPermu <- function(mat, vec, bin = 6, sp_order = 2, bulkIdx = 0, permuta
 
   permutationMIVector <- rep(0,permutationTimes)
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = F)
+    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = (ncol(mat)>nrow(mat)) )
     randColIdx <- sample(1:ncol(mat),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat[idx]
@@ -216,7 +216,7 @@ CMImat2vecPermu <- function(mat, vec, condi, bin = 6, sp_order = 2, bulkIdx = 0,
 
   permutationCondiMIVector <- rep(0,permutationTimes)
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = F)
+    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = (ncol(mat)>nrow(mat)) )
     randColIdx <- sample(1:ncol(mat),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat[idx]
@@ -289,11 +289,11 @@ MImat2matPermu <- function(mat1, mat2, bin = 6, sp_order = 2, bulkIdx = 0, permu
   permutationMIVector <- rep(0,permutationTimes)
 
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = F)
+    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = (ncol(mat1)>nrow(mat1)) )
     randColIdx <- sample(1:ncol(mat1),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat1[idx]
-    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = F)
+    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = (ncol(mat2)>nrow(mat2)) )
     randColIdx <- sample(1:ncol(mat2),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp2 <- mat2[idx]
@@ -377,11 +377,11 @@ CMImat2matPermu <- function(mat1, mat2, condi, bin = 6, sp_order = 2, bulkIdx = 
   permutationMIVector <- rep(0,permutationTimes)
 
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = F)
+    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = (ncol(mat1)>nrow(mat1)) )
     randColIdx <- sample(1:ncol(mat1),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat1[idx]
-    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = F)
+    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = (ncol(mat2)>nrow(mat2)) )
     randColIdx <- sample(1:ncol(mat2),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp2 <- mat2[idx]
@@ -480,7 +480,7 @@ CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = 6, sp_order =
 
   permutationCondiMIVector <- rep(0,permutationTimes)
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = F)
+    randRowIdx <- sample(1:nrow(mat),size = ncol(mat),replace = (ncol(mat)>nrow(mat)) )
     randColIdx <- sample(1:ncol(mat),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat[idx]
@@ -575,11 +575,11 @@ CMIBiCondimat2matPermu <- function(mat1, mat2, condi1, condi2, bin = 6, sp_order
   permutationMIVector <- rep(0,permutationTimes)
 
   for (p in 1:permutationTimes) {
-    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = F)
+    randRowIdx <- sample(1:nrow(mat1),size = ncol(mat1),replace = (ncol(mat1)>nrow(mat1)) )
     randColIdx <- sample(1:ncol(mat1),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp1 <- mat1[idx]
-    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = F)
+    randRowIdx <- sample(1:nrow(mat2),size = ncol(mat2),replace = (ncol(mat2)>nrow(mat2)) )
     randColIdx <- sample(1:ncol(mat2),replace = F)
     idx <- cbind(randRowIdx, randColIdx)
     randomExp2 <- mat2[idx]

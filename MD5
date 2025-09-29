@@ -1,9 +1,9 @@
-75222420723df0e76277cf532ed64a33 *DESCRIPTION
+b6e30f775526b40936e884648e1d299e *DESCRIPTION
 269cab37e24fd87efcb05d07d614f482 *NAMESPACE
 b5d6e8a2bc6280d204138e0d8bd62235 *R/ComputeEntropy.R
 0b2baedce1daa409c1f94f9ca60f02a1 *R/ComputeMatrix.R
 3304294b62089d4cf1f6f02a5a9342ad *R/ComputeMutualInformation.R
-1c9542f0cc6b372fab93494d9642a8d6 *R/ComputePermutation.R
+94ab3634d483c8c2b450ed1e5d1f1e02 *R/ComputePermutation.R
 f453813d43e130647df156d7009c4848 *R/getPvalue.R
 469daedd012ec9c623144688005472ee *man/CMIBiCondimat2mat.Rd
 c567f3fd84c6adc51bc763594ab82fe8 *man/CMIBiCondimat2matPermu.Rd
