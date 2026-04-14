@@ -4,7 +4,7 @@
 \alias{CMImat2mat}
 \title{Normalized Conditional Mutual Information Between Two Matrices}
 \usage{
-CMImat2mat(mat1, mat2, condi, bin = 6, sp_order = 2)
+CMImat2mat(mat1, mat2, condi, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{mat1}{A numeric matrix. For example, each row represents a gene and each column represents a sample.}
@@ -13,9 +13,9 @@ CMImat2mat(mat1, mat2, condi, bin = 6, sp_order = 2)
 
 \item{condi}{A numeric condition vector, matching the number of columns in `mat1`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric vector representing the normalized conditional mutual information (CMI) between pairs of rows

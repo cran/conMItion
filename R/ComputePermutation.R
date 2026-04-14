@@ -70,8 +70,8 @@ CORmat2vecPermu <- function(mat, vec, cor_type = "pearson", bulkIdx = 0, permuta
 #'
 #' @param mat A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -83,11 +83,8 @@ CORmat2vecPermu <- function(mat, vec, cor_type = "pearson", bulkIdx = 0, permuta
 #' MImat2vecPermu(mat, vec)
 #'
 #' @export
-MImat2vecPermu <- function(mat, vec, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+MImat2vecPermu <- function(mat, vec, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
-
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -100,21 +97,6 @@ MImat2vecPermu <- function(mat, vec, bin = 6, sp_order = 2, bulkIdx = 0, permuta
   # Check that mat and vec are of the same length
   if (ncol(mat) != length(vec)) {
     stop("The column of mat and the length of vector vec must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI = getMI(vec, vec, bin = bin, sp_order = sp_order)
@@ -149,8 +131,8 @@ MImat2vecPermu <- function(mat, vec, bin = 6, sp_order = 2, bulkIdx = 0, permuta
 #' @param mat A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
 #' @param condi A numeric condition vector, matching the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -163,11 +145,8 @@ MImat2vecPermu <- function(mat, vec, bin = 6, sp_order = 2, bulkIdx = 0, permuta
 #' CMImat2vecPermu(mat, vec, condi)
 #'
 #' @export
-CMImat2vecPermu <- function(mat, vec, condi, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+CMImat2vecPermu <- function(mat, vec, condi, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
-
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -188,21 +167,6 @@ CMImat2vecPermu <- function(mat, vec, condi, bin = 6, sp_order = 2, bulkIdx = 0,
 
   if (ncol(mat) != length(condi)) {
     stop("The column of mat and the length of vector condi must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI = getMI(vec, vec, bin = bin, sp_order = sp_order)
@@ -234,8 +198,8 @@ CMImat2vecPermu <- function(mat, vec, condi, bin = 6, sp_order = 2, bulkIdx = 0,
 #'
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -247,12 +211,10 @@ CMImat2vecPermu <- function(mat, vec, condi, bin = 6, sp_order = 2, bulkIdx = 0,
 #' MImat2matPermu(mat1, mat2)
 #'
 #' @export
-MImat2matPermu <- function(mat1, mat2, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+MImat2matPermu <- function(mat1, mat2, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
 
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.matrix(mat1) || !is.numeric(mat1) || is.na(sum(mat1)) ) {
     stop("Input mat1 must be a non-NA numeric matrix.")
@@ -265,21 +227,6 @@ MImat2matPermu <- function(mat1, mat2, bin = 6, sp_order = 2, bulkIdx = 0, permu
   # Check that 2 mats are of the same size
   if (ncol(mat1) != ncol(mat2) ) {
     stop("The column size of mat1 and mat2 must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   if (bulkIdx!=0) {
@@ -313,8 +260,8 @@ MImat2matPermu <- function(mat1, mat2, bin = 6, sp_order = 2, bulkIdx = 0, permu
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
 #' @param condi A numeric condition vector, matching the number of columns in `mat1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -327,12 +274,10 @@ MImat2matPermu <- function(mat1, mat2, bin = 6, sp_order = 2, bulkIdx = 0, permu
 #' CMImat2matPermu(mat1, mat2, condi)
 #'
 #' @export
-CMImat2matPermu <- function(mat1, mat2, condi, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+CMImat2matPermu <- function(mat1, mat2, condi, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
 
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(condi) || length(condi) == 0) {
     stop("Input condi must be a non-empty numeric vector.")
@@ -353,21 +298,6 @@ CMImat2matPermu <- function(mat1, mat2, condi, bin = 6, sp_order = 2, bulkIdx = 
 
   if (ncol(mat1) != length(condi)) {
     stop("The column of mat1 and the length of vector condi must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   if (bulkIdx!=0) {
@@ -404,8 +334,8 @@ CMImat2matPermu <- function(mat1, mat2, condi, bin = 6, sp_order = 2, bulkIdx = 
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
 #' @param condi1 A numeric condition vector, matching the number of columns in `mat`.
 #' @param condi2 Another numeric condition vector, matching the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -419,11 +349,8 @@ CMImat2matPermu <- function(mat1, mat2, condi, bin = 6, sp_order = 2, bulkIdx = 
 #' CMIBiCondimat2vecPermu(mat, vec, condi1, condi2)
 #'
 #' @export
-CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
-
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -452,21 +379,6 @@ CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = 6, sp_order =
 
   if (ncol(mat) != length(condi2)) {
     stop("The column of mat and the length of vector condi2 must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI = getMI(vec, vec, bin = bin, sp_order = sp_order)
@@ -502,8 +414,8 @@ CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = 6, sp_order =
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
 #' @param condi1 A numeric condition vector, matching the number of columns in `mat1`.
 #' @param condi2 Another numeric condition vector, matching the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @param bulkIdx Index to divide the task when processing many permutations. Default is 0.
 #' @param permutationTimes Number of permutations for sampling. Default is 1000.
 #' @param seedNum Seed for random number generation. Default is 99999999.
@@ -517,12 +429,10 @@ CMIBiCondimat2vecPermu <- function(mat, vec, condi1, condi2, bin = 6, sp_order =
 #' CMIBiCondimat2matPermu(mat1, mat2, condi1, condi2)
 #'
 #' @export
-CMIBiCondimat2matPermu <- function(mat1, mat2, condi1, condi2, bin = 6, sp_order = 2, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
+CMIBiCondimat2matPermu <- function(mat1, mat2, condi1, condi2, bin = NULL, sp_order = NULL, bulkIdx = 0, permutationTimes = 1000, seedNum = 99999999){
   set.seed(seedNum)
 
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(condi1) || length(condi1) == 0) {
     stop("Input condi1 must be a non-empty numeric vector.")
@@ -551,21 +461,6 @@ CMIBiCondimat2matPermu <- function(mat1, mat2, condi1, condi2, bin = 6, sp_order
 
   if (ncol(mat1) != length(condi2)) {
     stop("The column of mat1 and the length of vector condi2 must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   if (bulkIdx!=0) {

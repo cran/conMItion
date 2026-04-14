@@ -9,8 +9,8 @@ CMIBiCondimat2matPermu(
   mat2,
   condi1,
   condi2,
-  bin = 6,
-  sp_order = 2,
+  bin = NULL,
+  sp_order = NULL,
   bulkIdx = 0,
   permutationTimes = 1000,
   seedNum = 99999999
@@ -25,9 +25,9 @@ CMIBiCondimat2matPermu(
 
 \item{condi2}{Another numeric condition vector, matching the number of columns in `mat`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 
 \item{bulkIdx}{Index to divide the task when processing many permutations. Default is 0.}
 

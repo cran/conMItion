@@ -4,8 +4,8 @@
 #'
 #' @param x_1 A numeric vector representing the first variable.
 #' @param x_2 A numeric vector representing the second variable. Must be the same length as `x_1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the mutual information (MI).
 #'
 #' @examples
@@ -14,10 +14,8 @@
 #' getMI(x_1, x_2)
 #'
 #' @export
-getMI <- function(x_1, x_2, bin = 6, sp_order = 2) {
+getMI <- function(x_1, x_2, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -32,23 +30,14 @@ getMI <- function(x_1, x_2, bin = 6, sp_order = 2) {
     stop("Vectors x_1 and x_2 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C functions to compute the mutual information
   out <- .C("compute_mutual_information",
@@ -73,8 +62,8 @@ getMI <- function(x_1, x_2, bin = 6, sp_order = 2) {
 #' @param x_1 A numeric vector for the first variable.
 #' @param x_2 A numeric vector for the second variable. Must match the length of `x_1`.
 #' @param x_3 A numeric vector for the third variable. Must match the length of `x_1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing joint mutual information (MI).
 #'
 #' @examples
@@ -84,10 +73,8 @@ getMI <- function(x_1, x_2, bin = 6, sp_order = 2) {
 #' getMIBi(x_1, x_2, x_3)
 #'
 #' @export
-getMIBi <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
+getMIBi <- function(x_1, x_2, x_3, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -110,23 +97,14 @@ getMIBi <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
     stop("Vectors x_1, x_2, and x_3 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C functions to compute the mutual information
   out <- .C("compute_mutual_information_12_to_3",
@@ -152,8 +130,8 @@ getMIBi <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' @param x_1 A numeric vector for the first variable.
 #' @param x_2 A numeric vector for the second variable. Must match `x_1` length.
 #' @param x_3 A numeric vector for the condition variable. Must match `x_1` length.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the conditional mutual information (CMI).
 #'
 #' @examples
@@ -163,10 +141,8 @@ getMIBi <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' getCMI(x_1, x_2, x_3)
 #'
 #' @export
-getCMI <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
+getCMI <- function(x_1, x_2, x_3, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -189,23 +165,14 @@ getCMI <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
     stop("Vectors x_1, x_2, and x_3 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C functions to compute the conditional mutual information
   out <- .C("compute_conditional_mutual_information_12_to_3",
@@ -232,8 +199,8 @@ getCMI <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' @param x_2 A numeric vector for the second variable. Must match `x_1` length.
 #' @param x_3 A numeric vector for the first condition variable. Must match `x_1` length.
 #' @param x_4 A numeric vector for the second condition variable. Must match `x_1` length.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the bivariate conditional mutual information (CMI).
 #'
 #' @examples
@@ -244,10 +211,8 @@ getCMI <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' getCMIBiCondi(x_1, x_2, x_3, x_4)
 #'
 #' @export
-getCMIBiCondi <- function(x_1, x_2, x_3, x_4, bin = 6, sp_order = 2) {
+getCMIBiCondi <- function(x_1, x_2, x_3, x_4, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -278,23 +243,14 @@ getCMIBiCondi <- function(x_1, x_2, x_3, x_4, bin = 6, sp_order = 2) {
     stop("Vectors x_1, x_2, x_3 and x_4 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C functions to compute the conditional mutual information
   out <- .C("compute_conditional_mutual_information_12_to_34",

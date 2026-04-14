@@ -4,16 +4,16 @@
 \alias{MImat2vec}
 \title{Normalized Mutual Information Between Matrix and Vector}
 \usage{
-MImat2vec(mat, vec, bin = 6, sp_order = 2)
+MImat2vec(mat, vec, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{mat}{A numeric matrix. For example, each row represents a gene and each column represents a sample.}
 
 \item{vec}{A numeric vector, with length equal to the number of columns in `mat`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric vector representing the normalized mutual information (MI) between each row of `mat` and `vec`.

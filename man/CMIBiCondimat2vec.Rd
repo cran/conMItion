@@ -4,7 +4,7 @@
 \alias{CMIBiCondimat2vec}
 \title{Normalized Conditional Mutual Information Between Matrix and Vector Given Two Conditions}
 \usage{
-CMIBiCondimat2vec(mat, vec, condi1, condi2, bin = 6, sp_order = 2)
+CMIBiCondimat2vec(mat, vec, condi1, condi2, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{mat}{A numeric matrix. For example, each row represents a gene and each column represents a sample.}
@@ -15,9 +15,9 @@ CMIBiCondimat2vec(mat, vec, condi1, condi2, bin = 6, sp_order = 2)
 
 \item{condi2}{Another numeric condition vector, matching the number of columns in `mat`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric vector representing the normalized conditional mutual information (CMI) between each row of `mat` and `vec`, given `condi1` and `condi2`.

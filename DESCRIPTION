@@ -1,7 +1,7 @@
 Package: conMItion
 Type: Package
 Title: Conditional Mutual Information Estimation for Multi-Omics Data
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(
     person(
       "Gaojianyong", "Wang",
@@ -22,10 +22,10 @@ Description: The biases introduced in association measures, particularly mutual 
     omics data.
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: yes
-Packaged: 2025-09-29 11:44:13 UTC; gjywang
+Packaged: 2026-04-14 12:31:29 UTC; gwang
 Author: Gaojianyong Wang [aut, cre]
 Maintainer: Gaojianyong Wang <gjywang@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-09-29 12:10:10 UTC
+Date/Publication: 2026-04-14 12:50:02 UTC

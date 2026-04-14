@@ -5,8 +5,8 @@
 #'
 #' @param mat A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #'
 #' @return A numeric vector representing the normalized mutual information (MI) between each row of `mat` and `vec`.
 #'
@@ -16,10 +16,8 @@
 #' MImat2vec(mat, vec)
 #'
 #' @export
-MImat2vec <- function(mat, vec, bin = 6, sp_order = 2) {
+MImat2vec <- function(mat, vec, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -32,21 +30,6 @@ MImat2vec <- function(mat, vec, bin = 6, sp_order = 2) {
   # Check that mat and vec are of the same length
   if (ncol(mat) != length(vec)) {
     stop("The column of mat and the length of vector vec must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI <- getMI(vec, vec, bin = bin, sp_order = sp_order)
@@ -72,8 +55,8 @@ MImat2vec <- function(mat, vec, bin = 6, sp_order = 2) {
 #' @param mat A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
 #' @param condi A numeric condition vector, matching the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric vector representing the normalized conditional mutual information (CMI) between each row of `mat` and `vec`, given `condi`.
 #'
 #' @examples
@@ -83,10 +66,8 @@ MImat2vec <- function(mat, vec, bin = 6, sp_order = 2) {
 #' CMImat2vec(mat, vec, condi)
 #'
 #' @export
-CMImat2vec <- function(mat, vec, condi, bin = 6, sp_order = 2) {
+CMImat2vec <- function(mat, vec, condi, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -107,21 +88,6 @@ CMImat2vec <- function(mat, vec, condi, bin = 6, sp_order = 2) {
 
   if (ncol(mat) != length(condi)) {
     stop("The column of mat and the length of vector condi must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI <- getMI(vec, vec, bin = bin, sp_order = sp_order)
@@ -146,8 +112,8 @@ CMImat2vec <- function(mat, vec, condi, bin = 6, sp_order = 2) {
 #'
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric vector where each element corresponds to the normalized mutual information (MI) between
 #' respective rows of `mat1` and `mat2`.
 #'
@@ -157,10 +123,8 @@ CMImat2vec <- function(mat, vec, condi, bin = 6, sp_order = 2) {
 #' MImat2mat(mat1, mat2)
 #'
 #' @export
-MImat2mat <- function(mat1, mat2, bin = 6, sp_order = 2) {
+MImat2mat <- function(mat1, mat2, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.matrix(mat1) || !is.numeric(mat1) || is.na(sum(mat1)) ) {
     stop("Input mat must be a non-NA numeric matrix.")
@@ -173,21 +137,6 @@ MImat2mat <- function(mat1, mat2, bin = 6, sp_order = 2) {
   # Check that 2 mats are of the same size
   if (ncol(mat1) != ncol(mat2) | nrow(mat1) != nrow(mat2) ) {
     stop("The size of mat1 and mat2 must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI <- sapply(1:nrow(mat1), function(x)
@@ -212,8 +161,8 @@ MImat2mat <- function(mat1, mat2, bin = 6, sp_order = 2) {
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
 #' @param condi A numeric condition vector, matching the number of columns in `mat1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric vector representing the normalized conditional mutual information (CMI) between pairs of rows
 #' from `mat1` and `mat2`, conditioned on `condi`.
 #'
@@ -224,10 +173,8 @@ MImat2mat <- function(mat1, mat2, bin = 6, sp_order = 2) {
 #' CMImat2mat(mat1, mat2, condi)
 #'
 #' @export
-CMImat2mat <- function(mat1, mat2, condi, bin = 6, sp_order = 2) {
+CMImat2mat <- function(mat1, mat2, condi, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(condi) || length(condi) == 0) {
     stop("Input condi must be a non-empty numeric vector.")
@@ -248,21 +195,6 @@ CMImat2mat <- function(mat1, mat2, condi, bin = 6, sp_order = 2) {
 
   if (ncol(mat1) != length(condi)) {
     stop("The column of mat1 and the length of vector condi must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI <- sapply(1:nrow(mat1), function(x)
@@ -287,8 +219,8 @@ CMImat2mat <- function(mat1, mat2, condi, bin = 6, sp_order = 2) {
 #' @param vec A numeric vector, with length equal to the number of columns in `mat`.
 #' @param condi1 A numeric condition vector, matching the number of columns in `mat`.
 #' @param condi2 Another numeric condition vector, matching the number of columns in `mat`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric vector representing the normalized conditional mutual information (CMI) between each row of `mat` and `vec`, given `condi1` and `condi2`.
 #'
 #' @examples
@@ -299,10 +231,8 @@ CMImat2mat <- function(mat1, mat2, condi, bin = 6, sp_order = 2) {
 #' CMIBiCondimat2vec(mat, vec, condi1, condi2)
 #'
 #' @export
-CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = 6, sp_order = 2) {
+CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(vec) || length(vec) == 0) {
     stop("Input vec must be a non-empty numeric vector.")
@@ -333,21 +263,6 @@ CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = 6, sp_order = 2) {
     stop("The column of mat and the length of vector condi2 must be the same.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   max_MI <- getMI(vec, vec, bin = bin, sp_order = sp_order)
   # Ensure vec contains information
   if (max_MI == 0) {
@@ -372,8 +287,8 @@ CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = 6, sp_order = 2) {
 #' @param mat2 Another numeric matrix to compare against. Must have the same dimensions as `mat1`.
 #' @param condi1 A numeric condition vector, matching the number of columns in `mat1`.
 #' @param condi2 Another numeric condition vector, matching the number of columns in `mat1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric vector representing the normalized conditional mutual information (CMI) between pairs of rows
 #' from `mat1` and `mat2`, conditioned on `condi1` and `condi2`.
 #'
@@ -385,10 +300,8 @@ CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = 6, sp_order = 2) {
 #' CMIBiCondimat2mat(mat1, mat2, condi1, condi2)
 #'
 #' @export
-CMIBiCondimat2mat <- function(mat1, mat2, condi1, condi2, bin = 6, sp_order = 2) {
+CMIBiCondimat2mat <- function(mat1, mat2, condi1, condi2, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(condi1) || length(condi1) == 0) {
     stop("Input condi1 must be a non-empty numeric vector.")
@@ -417,21 +330,6 @@ CMIBiCondimat2mat <- function(mat1, mat2, condi1, condi2, bin = 6, sp_order = 2)
 
   if (ncol(mat1) != length(condi2)) {
     stop("The column of mat1 and the length of vector condi2 must be the same.")
-  }
-
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
   }
 
   max_MI <- sapply(1:nrow(mat1), function(x)

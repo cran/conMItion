@@ -3,8 +3,8 @@
 #' number of bins and spline order.
 #'
 #' @param x_1 A numeric vector for the only variable.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the entropy of the vector.
 #'
 #' @examples
@@ -12,29 +12,21 @@
 #' getEntropy(x_1)
 #'
 #' @export
-getEntropy <- function(x_1, bin = 6, sp_order = 2) {
+getEntropy <- function(x_1, bin = NULL, sp_order = NULL) {
   # Check inputs
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
   }
 
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'")
-  }
-
   # Get the length of x_1
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C function for entropy calculation
   out <- .C("compute_entropy_univar",
@@ -54,8 +46,8 @@ getEntropy <- function(x_1, bin = 6, sp_order = 2) {
 #'
 #' @param x_1 A numeric vector for the first variable.
 #' @param x_2 A numeric vector for the second variable. Must be the same length as `x_1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the joint entropy of the two vectors.
 #'
 #' @examples
@@ -64,10 +56,9 @@ getEntropy <- function(x_1, bin = 6, sp_order = 2) {
 #' getEntropyBi(x_1, x_2)
 #'
 #' @export
-getEntropyBi <- function(x_1, x_2, bin = 6, sp_order = 2) {
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
-  # Validate inputs are numeric vectors
+getEntropyBi <- function(x_1, x_2, bin = NULL, sp_order = NULL) {
+  # Check inputs
+
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
   }
@@ -81,23 +72,14 @@ getEntropyBi <- function(x_1, x_2, bin = 6, sp_order = 2) {
     stop("Vectors x_1 and x_2 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Define the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
 
   # Call the C function for joint entropy calculation
   out <- .C("compute_entropy_bivar",
@@ -120,8 +102,8 @@ getEntropyBi <- function(x_1, x_2, bin = 6, sp_order = 2) {
 #' @param x_1 A numeric vector for the first variable.
 #' @param x_2 A numeric vector for the second variable. Must be the same length as `x_1`.
 #' @param x_3 A numeric vector for the third variable. Must be the same length as `x_1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the joint entropy of the three vectors.
 #'
 #' @examples
@@ -131,10 +113,8 @@ getEntropyBi <- function(x_1, x_2, bin = 6, sp_order = 2) {
 #' getEntropyTri(x_1, x_2, x_3)
 #'
 #' @export
-getEntropyTri <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
+getEntropyTri <- function(x_1, x_2, x_3, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -157,23 +137,15 @@ getEntropyTri <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
     stop("Vectors x_1, x_2, and x_3 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
+
 
   # Call the C functions to compute the entropy
   out <- .C("compute_entropy_trivar",
@@ -199,8 +171,8 @@ getEntropyTri <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' @param x_2 A numeric vector for the second variable. Must be the same length as `x_1`.
 #' @param x_3 A numeric vector for the third variable. Must be the same length as `x_1`.
 #' @param x_4 A numeric vector for the fourth variable. Must be the same length as `x_1`.
-#' @param bin An integer specifying the number of bins. Default is 6.
-#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is 2.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
 #' @return A numeric value representing the joint entropy of the four vectors.
 #'
 #' @examples
@@ -211,10 +183,8 @@ getEntropyTri <- function(x_1, x_2, x_3, bin = 6, sp_order = 2) {
 #' getEntropyQuadri(x_1, x_2, x_3, x_4)
 #'
 #' @export
-getEntropyQuadri <- function(x_1, x_2, x_3, x_4, bin = 6, sp_order = 2) {
+getEntropyQuadri <- function(x_1, x_2, x_3, x_4, bin = NULL, sp_order = NULL) {
   # Validate inputs as non-empty numeric vectors
-  bin <- as.integer(bin)
-  sp_order <- as.integer(sp_order)
 
   if (!is.numeric(x_1) || length(x_1) == 0) {
     stop("Input x_1 must be a non-empty numeric vector.")
@@ -245,23 +215,15 @@ getEntropyQuadri <- function(x_1, x_2, x_3, x_4, bin = 6, sp_order = 2) {
     stop("Vectors x_1, x_2, x_3 and x_4 must be of the same length.")
   }
 
-  # Validate bin value
-  if (!is.integer(bin) || bin <= 0) {
-    stop("Parameter 'bin' must be a positive integer.")
-  }
-
-  # Validate sp_order value
-  if (!is.integer(sp_order) || sp_order <= 0) {
-    stop("Parameter 'sp_order' must be a positive integer.")
-  }
-
-  # Ensure spline order is less than number of bins
-  if (sp_order >= bin) {
-    stop("Spline order 'sp_order' must be less than 'bin'.")
-  }
-
   # Get the length of the vectors
   n <- length(x_1)
+
+  # Check parameters and generate automatically if incorrect
+  params <- resolve_params(n, bin, sp_order)
+
+  bin=as.integer(params$bin)
+  sp_order=as.integer(params$sp_order)
+
 
   # Call the C functions to compute the entropy
   out <- .C("compute_entropy_quadrivar",

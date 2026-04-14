@@ -4,16 +4,16 @@
 \alias{getMI}
 \title{Calculate Mutual Information Between Two Vectors}
 \usage{
-getMI(x_1, x_2, bin = 6, sp_order = 2)
+getMI(x_1, x_2, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{x_1}{A numeric vector representing the first variable.}
 
 \item{x_2}{A numeric vector representing the second variable. Must be the same length as `x_1`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric value representing the mutual information (MI).

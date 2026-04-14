@@ -4,14 +4,14 @@
 \alias{getEntropy}
 \title{Calculate Univariate Entropy}
 \usage{
-getEntropy(x_1, bin = 6, sp_order = 2)
+getEntropy(x_1, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{x_1}{A numeric vector for the only variable.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric value representing the entropy of the vector.

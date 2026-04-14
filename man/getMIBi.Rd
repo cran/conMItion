@@ -4,7 +4,7 @@
 \alias{getMIBi}
 \title{Calculate Joint Mutual Information}
 \usage{
-getMIBi(x_1, x_2, x_3, bin = 6, sp_order = 2)
+getMIBi(x_1, x_2, x_3, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{x_1}{A numeric vector for the first variable.}
@@ -13,9 +13,9 @@ getMIBi(x_1, x_2, x_3, bin = 6, sp_order = 2)
 
 \item{x_3}{A numeric vector for the third variable. Must match the length of `x_1`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric value representing joint mutual information (MI).

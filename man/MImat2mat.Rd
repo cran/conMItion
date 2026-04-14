@@ -4,16 +4,16 @@
 \alias{MImat2mat}
 \title{Normalized Mutual Information Between Two Matrices}
 \usage{
-MImat2mat(mat1, mat2, bin = 6, sp_order = 2)
+MImat2mat(mat1, mat2, bin = NULL, sp_order = NULL)
 }
 \arguments{
 \item{mat1}{A numeric matrix. For example, each row represents a gene and each column represents a sample.}
 
 \item{mat2}{Another numeric matrix to compare against. Must have the same dimensions as `mat1`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 }
 \value{
 A numeric vector where each element corresponds to the normalized mutual information (MI) between

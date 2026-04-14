@@ -7,8 +7,8 @@
 MImat2matPermu(
   mat1,
   mat2,
-  bin = 6,
-  sp_order = 2,
+  bin = NULL,
+  sp_order = NULL,
   bulkIdx = 0,
   permutationTimes = 1000,
   seedNum = 99999999
@@ -19,9 +19,9 @@ MImat2matPermu(
 
 \item{mat2}{Another numeric matrix to compare against. Must have the same dimensions as `mat1`.}
 
-\item{bin}{An integer specifying the number of bins. Default is 6.}
+\item{bin}{An integer specifying the number of bins. Default is NULL.}
 
-\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is 2.}
+\item{sp_order}{An integer specifying the spline order. Must be less than `bin`. Default is NULL.}
 
 \item{bulkIdx}{Index to divide the task when processing many permutations. Default is 0.}
 
