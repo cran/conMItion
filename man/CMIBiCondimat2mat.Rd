@@ -24,7 +24,7 @@ A numeric vector representing the normalized conditional mutual information (CMI
 from `mat1` and `mat2`, conditioned on `condi1` and `condi2`.
 }
 \description{
-Computes the normalized conditional mutual information (CMI) between corresponding rows of two matrices,
+Computes the normalized conditional mutual information (CMI) between the same rows of two matrices,
 given two condition variables, normalized by their individual information content. CMI is calculated using the specified number of bins and spline order.
 }
 \examples{

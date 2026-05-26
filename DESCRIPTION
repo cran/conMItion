@@ -1,7 +1,7 @@
 Package: conMItion
 Type: Package
 Title: Conditional Mutual Information Estimation for Multi-Omics Data
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person(
       "Gaojianyong", "Wang",
@@ -24,8 +24,8 @@ License: GPL-2
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 NeedsCompilation: yes
-Packaged: 2026-04-14 12:31:29 UTC; gwang
+Packaged: 2026-05-26 11:47:19 UTC; gwang
 Author: Gaojianyong Wang [aut, cre]
 Maintainer: Gaojianyong Wang <gjywang@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-04-14 12:50:02 UTC
+Date/Publication: 2026-05-26 12:10:02 UTC

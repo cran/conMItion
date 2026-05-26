@@ -107,7 +107,7 @@ CMImat2vec <- function(mat, vec, condi, bin = NULL, sp_order = NULL) {
 
 
 #' @title Normalized Mutual Information Between Two Matrices
-#' @description Computes the normalized mutual information (MI) between corresponding rows of two matrices
+#' @description Computes the normalized mutual information (MI) between the same rows of two matrices
 #' normalized by their individual information content, using the specified number of bins and spline order.
 #'
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
@@ -155,7 +155,7 @@ MImat2mat <- function(mat1, mat2, bin = NULL, sp_order = NULL) {
 
 
 #' @title Normalized Conditional Mutual Information Between Two Matrices
-#' @description Computes the normalized conditional mutual information (CMI) between corresponding rows of two matrices,
+#' @description Computes the normalized conditional mutual information (CMI) between the same rows of two matrices,
 #' given a condition variable, normalized by their individual information content. CMI is calculated using the specified number of bins and spline order.
 #'
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
@@ -280,7 +280,7 @@ CMIBiCondimat2vec <- function(mat, vec, condi1, condi2, bin = NULL, sp_order = N
 
 
 #' @title Normalized Conditional Mutual Information Between Two Matrices Given Two Conditions
-#' @description Computes the normalized conditional mutual information (CMI) between corresponding rows of two matrices,
+#' @description Computes the normalized conditional mutual information (CMI) between the same rows of two matrices,
 #' given two condition variables, normalized by their individual information content. CMI is calculated using the specified number of bins and spline order.
 #'
 #' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
@@ -344,4 +344,208 @@ CMIBiCondimat2mat <- function(mat1, mat2, condi1, condi2, bin = NULL, sp_order =
   names(normalized_mi_vector) <- row.names(mat1)
   normalized_mi_vector[normalized_mi_vector<0] = 0
   return(normalized_mi_vector)
+}
+
+
+#' @title Normalized Mutual Information Between Each Row of Two Matrices
+#' @description Computes the normalized mutual information (MI) between each row of first matrix and each row of second matrix,
+#' normalized by their individual information content, using the specified number of bins and spline order.
+#'
+#' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
+#' @param mat2 Another numeric matrix to compare against. Must have the columns as `mat1`.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
+#' @return A matrix where each element corresponds to the normalized mutual information (MI) between
+#' respective rows of `mat1` and `mat2`.
+#'
+#' @examples
+#' mat1 <- matrix(rnorm(1000), nrow = 10, ncol = 100)
+#' mat2 <- matrix(rnorm(2000), nrow = 200, ncol = 100)
+#' MImat2matAll(mat1, mat2)
+#'
+#' @export
+MImat2matAll <- function(mat1, mat2, bin = NULL, sp_order = NULL) {
+  # Validate inputs as non-empty numeric vectors
+
+  if (!is.matrix(mat1) || !is.numeric(mat1) || is.na(sum(mat1)) ) {
+    stop("Input mat must be a non-NA numeric matrix.")
+  }
+
+  if (!is.matrix(mat2) || !is.numeric(mat2) || is.na(sum(mat2)) ) {
+    stop("Input mat must be a non-NA numeric matrix.")
+  }
+
+  # Check that 2 mats are of the same size
+  if (ncol(mat1) != ncol(mat2) ) {
+    stop("The size of mat1 and mat2 must be the same.")
+  }
+
+  mi_matrix <- do.call(
+    rbind,
+    lapply(seq_len(nrow(mat1)), function(i) {
+      repeated_row <- matrix(
+        rep(mat1[i, ], each = nrow(mat2)),
+        nrow = nrow(mat2), byrow = FALSE
+      )
+
+      MImat2mat(
+        mat2, repeated_row,
+        bin = bin,
+        sp_order = sp_order
+      )
+    })
+  )
+
+  rownames(mi_matrix) <- rownames(mat1)
+  colnames(mi_matrix) <- rownames(mat2)
+
+  return(mi_matrix)
+}
+
+
+#' @title Normalized Conditional Mutual Information Between Each Row of Two Matrices
+#' @description Computes the normalized conditional mutual information (CMI) between each row of first matrix and each row of second matrix,
+#' given a condition variable, normalized by their individual information content. CMI is calculated using the
+#' specified number of bins and spline order.
+#'
+#' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
+#' @param mat2 Another numeric matrix to compare against. Must have the same columns as `mat1`.
+#' @param condi A numeric condition vector, matching the number of columns in `mat1`.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
+#' @return A matrix where each element corresponds to the normalized conditional mutual information (CMI)
+#' between each row of `mat1` and each row of `mat2`, conditioned on `condi`.
+#'
+#' @examples
+#' mat1 <- matrix(rnorm(1000), nrow = 10, ncol = 100)
+#' mat2 <- matrix(rnorm(20000), nrow = 200, ncol = 100)
+#' condi <- rnorm(100)
+#' CMImat2matAll(mat1, mat2, condi)
+#'
+#' @export
+CMImat2matAll <- function(mat1, mat2, condi, bin = NULL, sp_order = NULL) {
+  # Validate inputs as non-empty numeric vectors
+
+  if (!is.numeric(condi) || length(condi) == 0 || is.na(sum(condi)) ) {
+    stop("Input condi must be a non-empty non-NA numeric vector.")
+  }
+
+  if (!is.matrix(mat1) || !is.numeric(mat1) || is.na(sum(mat1)) ) {
+    stop("Input mat1 must be a non-NA numeric matrix.")
+  }
+
+  if (!is.matrix(mat2) || !is.numeric(mat2) || is.na(sum(mat2)) ) {
+    stop("Input mat2 must be a non-NA numeric matrix.")
+  }
+
+  # Check that 2 mats have the same number of columns
+  if (ncol(mat1) != ncol(mat2) ) {
+    stop("mat1 and mat2 must have the same number of columns.")
+  }
+
+  if (ncol(mat1) != length(condi)) {
+    stop("The column of mat1 and the length of vector condi must be the same.")
+  }
+
+  cmi_matrix <- do.call(
+    rbind,
+    lapply(seq_len(nrow(mat1)), function(i) {
+      repeated_row <- matrix(
+        rep(mat1[i, ], each = nrow(mat2)),
+        nrow = nrow(mat2),
+        byrow = FALSE
+      )
+
+      CMImat2mat(
+        repeated_row, mat2,
+        condi = condi, bin = bin, sp_order = sp_order
+      )
+    })
+  )
+
+  rownames(cmi_matrix) <- rownames(mat1)
+  colnames(cmi_matrix) <- rownames(mat2)
+
+  return(cmi_matrix)
+}
+
+
+#' @title Normalized Conditional Mutual Information Between Each Row of Two Matrices Given Two Conditions
+#' @description Computes the normalized conditional mutual information (CMI) between each row of first matrix and each row of second matrix,
+#' given two condition variables, normalized by their individual information content. CMI is calculated using
+#' the specified number of bins and spline order.
+#'
+#' @param mat1 A numeric matrix. For example, each row represents a gene and each column represents a sample.
+#' @param mat2 Another numeric matrix to compare against. Must have the same columns as `mat1`.
+#' @param condi1 A numeric condition vector, matching the number of columns in `mat1`.
+#' @param condi2 Another numeric condition vector, matching the number of columns in `mat1`.
+#' @param bin An integer specifying the number of bins. Default is NULL.
+#' @param sp_order An integer specifying the spline order. Must be less than `bin`. Default is NULL.
+#' @return A matrix where each element corresponds to the normalized conditional mutual information (CMI)
+#' between each row of `mat1` and each row of `mat2`, conditioned on `condi1` and `condi2`.
+#'
+#' @examples
+#' mat1 <- matrix(rnorm(1000), nrow = 10, ncol = 100)
+#' mat2 <- matrix(rnorm(20000), nrow = 200, ncol = 100)
+#' condi1 <- rnorm(100)
+#' condi2 <- rnorm(100)
+#' CMIBiCondimat2matAll(mat1, mat2, condi1, condi2)
+#'
+#' @export
+CMIBiCondimat2matAll <- function(mat1, mat2, condi1, condi2, bin = NULL, sp_order = NULL) {
+  # Validate inputs as non-empty numeric vectors
+
+  if (!is.numeric(condi1) || length(condi1) == 0 || is.na(sum(condi1)) ) {
+    stop("Input condi1 must be a non-empty non-NA numeric vector.")
+  }
+
+  if (!is.numeric(condi2) || length(condi2) == 0 || is.na(sum(condi2)) ) {
+    stop("Input condi2 must be a non-empty non-NA numeric vector.")
+  }
+
+  if (!is.matrix(mat1) || !is.numeric(mat1) || is.na(sum(mat1)) ) {
+    stop("Input mat1 must be a non-NA numeric matrix.")
+  }
+
+  if (!is.matrix(mat2) || !is.numeric(mat2) || is.na(sum(mat2)) ) {
+    stop("Input mat2 must be a non-NA numeric matrix.")
+  }
+
+  # Check that 2 mats have the same number of columns
+  if (ncol(mat1) != ncol(mat2) ) {
+    stop("mat1 and mat2 must have the same number of columns.")
+  }
+
+  if (ncol(mat1) != length(condi1)) {
+    stop("The column of mat1 and the length of vector condi1 must be the same.")
+  }
+
+  if (ncol(mat1) != length(condi2)) {
+    stop("The column of mat1 and the length of vector condi2 must be the same.")
+  }
+
+  cmi_matrix <- do.call(
+    rbind,
+    lapply(seq_len(nrow(mat1)), function(i) {
+      repeated_row <- matrix(
+        rep(mat1[i, ], each = nrow(mat2)),
+        nrow = nrow(mat2),
+        byrow = FALSE
+      )
+
+      CMIBiCondimat2mat(
+        repeated_row,
+        mat2,
+        condi1 = condi1,
+        condi2 = condi2,
+        bin = bin,
+        sp_order = sp_order
+      )
+    })
+  )
+
+  rownames(cmi_matrix) <- rownames(mat1)
+  colnames(cmi_matrix) <- rownames(mat2)
+
+  return(cmi_matrix)
 }

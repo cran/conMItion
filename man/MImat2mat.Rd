@@ -20,7 +20,7 @@ A numeric vector where each element corresponds to the normalized mutual informa
 respective rows of `mat1` and `mat2`.
 }
 \description{
-Computes the normalized mutual information (MI) between corresponding rows of two matrices
+Computes the normalized mutual information (MI) between the same rows of two matrices
 normalized by their individual information content, using the specified number of bins and spline order.
 }
 \examples{
