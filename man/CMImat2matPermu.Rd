@@ -12,13 +12,14 @@ CMImat2matPermu(
   sp_order = NULL,
   bulkIdx = 0,
   permutationTimes = 1000,
-  seedNum = 99999999
+  seedNum = 99999999,
+  permutation_method = c("random", "within_bins")
 )
 }
 \arguments{
 \item{mat1}{A numeric matrix. For example, each row represents a gene and each column represents a sample.}
 
-\item{mat2}{Another numeric matrix to compare against. Must have the same dimensions as `mat1`.}
+\item{mat2}{Another numeric matrix to compare against. Must have the same columns as `mat1`.}
 
 \item{condi}{A numeric condition vector, matching the number of columns in `mat1`.}
 
@@ -31,6 +32,8 @@ CMImat2matPermu(
 \item{permutationTimes}{Number of permutations for sampling. Default is 1000.}
 
 \item{seedNum}{Seed for random number generation. Default is 99999999.}
+
+\item{permutation_method}{A character string specifying the permutation scheme. Use `"random"` for the original random row-column sampling procedure, or `"within_bins"` for conditional permutation within bins of `condi`.}
 }
 \value{
 A numeric vector of normalized conditional mutual information (CMI) values for each permutation.

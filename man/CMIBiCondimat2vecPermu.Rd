@@ -13,7 +13,8 @@ CMIBiCondimat2vecPermu(
   sp_order = NULL,
   bulkIdx = 0,
   permutationTimes = 1000,
-  seedNum = 99999999
+  seedNum = 99999999,
+  permutation_method = c("random", "within_bins")
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ CMIBiCondimat2vecPermu(
 \item{permutationTimes}{Number of permutations for sampling. Default is 1000.}
 
 \item{seedNum}{Seed for random number generation. Default is 99999999.}
+
+\item{permutation_method}{A character string specifying the permutation scheme. Use `"random"` for the original random row-column sampling procedure, or `"within_bins"` for conditional permutation within joint bins of `condi1` and `condi2`.}
 }
 \value{
 A numeric vector of normalized conditional mutual information (CMI) values for each permutation.
